@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 interface AuthRequest extends Request {
-    user?: { userId: string, role?: string }
+    user?: { userId: string, role?: string },
 };
 
 // Authenticate the user
@@ -24,5 +24,14 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
         next();
     } catch (error) {
         res.status(401).json({ message: 'הטוקן לא בתוקף' });
+    }
+}
+export const teacherAuthMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (req.user?.role !=='teacher') {
+        console.log(req.user?.role);
+        
+        res.status(403).json({message: "Access denied, Teachers only!"})
+    } else {
+        next()
     }
 }

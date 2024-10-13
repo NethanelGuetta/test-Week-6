@@ -34,6 +34,7 @@ export const login = async (req: Request, res: Response) => {
             secure: false,
             maxAge: 3600000
         })
+        
         return res.status(200).json({ message: "logged in successfully", token });
     }
     

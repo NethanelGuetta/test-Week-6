@@ -1,7 +1,6 @@
 import { Router } from "express";
-import * as teacerService  from "../controllers/teacherController";
+import * as teacerController from "../controllers/teacherController";
 import { errorHandler } from '../utils/errorHandler';
-
 const router = Router();
 
 /**
@@ -39,7 +38,7 @@ const router = Router();
  *      503:
  *        description: Service is temporarily unavailable
  */
-router.post("/register", errorHandler(teacerService.registerTeacher));
+router.post("/register", errorHandler(teacerController.registerTeacher));
 
 /**
  * @swagger
@@ -74,5 +73,8 @@ router.post("/register", errorHandler(teacerService.registerTeacher));
  *      503:
  *        description: Service is temporarily unavailable
  */
-router.post("/grade/:studentId", errorHandler(teacerService.addGradeToStudent));
+router.post("/grade/:studentId", errorHandler(teacerController.addGradeToStudent));
+
+router.get("/students/", errorHandler(teacerController.getStudents));
+
 export default router;

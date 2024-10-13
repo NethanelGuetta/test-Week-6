@@ -38,9 +38,6 @@ export const registerTeacher = async (req: Request, res: Response) => {
 };
 
 export const addGradeToStudent = async (req: Request, res: Response) => {
-    if (getRoleFromToken(req.cookies.token) !== "teacher") {
-        return res.status(401).json({ message: "Your are not a teacher" });
-    }
     const { exam, comment, score } = req.body;
     const { studentId } = req.params;
     const teacherId = getIdFromToken(req.cookies.token);
@@ -60,11 +57,11 @@ export const addGradeToStudent = async (req: Request, res: Response) => {
 }
 
 export const getStudents = async (req: Request, res: Response) => {
-    const userId = getIdFromToken(req.cookies.token);
-    if (getRoleFromToken(req.cookies.token) === "student") {
-        
-        const grades = await getScoresOfStudent(req.params.id);
-        return res.status(401).json({ message: "Your are not a teacher" });
+    if (getRoleFromToken(req.cookies.token) !== "teacher") {
+        return res.status(401).json({ message: "You are not a teacher" });
     }
-    const students = await getStudentByClass();
+    const teacherId = getIdFromToken(req.cookies.token);
+    const teacher = await Teacher.findById(teacherId);
+    const students = await getStudentByClass(teacher?.classId as Types.ObjectId);
+    res.status(200).json(students);
 }

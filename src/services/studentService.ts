@@ -20,12 +20,17 @@ export const getStudents = async (): Promise<IStudent[] | null> => {
     const students = await Student.find();
     return students;
 }
-export const getStudentByClass = async (classIdid: string): Promise<IStudent[] | null> => {
+export const getStudentByClass = async (classIdid: Types.ObjectId): Promise<IStudent[] | null> => {
     const students = await Student.find({ classId: classIdid });
+    console.log(students);
     return students;
 }
 
 export const getScoresOfStudent = async (id: string): Promise<IGrade[] | null> => {
     const student = await Student.findById(id);
-    return  student?.grades ?? null;
+    console.log(student);
+    if (!student) {
+        return null
+    }
+    return  student.grades
 }
