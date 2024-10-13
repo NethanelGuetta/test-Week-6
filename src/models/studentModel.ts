@@ -6,6 +6,7 @@ export interface IGrade {
     exam: string;
     score: number;
     comment: string;
+    id?: string;
 }
 
 export interface IStudent extends Document{

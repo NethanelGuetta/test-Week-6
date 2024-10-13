@@ -75,6 +75,43 @@ router.post("/register", errorHandler(teacerController.registerTeacher));
  */
 router.post("/grade/:studentId", errorHandler(teacerController.addGradeToStudent));
 
+/**
+ * @swagger
+ * /students:
+ *  get:
+ *    summary: Get all students
+ *    description: Return all students, available only for teachers
+ *    tags: [Teachers]
+ *    security:
+ *      - cookieAuth: []
+ *    responses:
+ *      200:
+ *        description: Users list returned successfully
+ *      401:
+ *        description: Unauthorized
+ *      503:
+ *        description: Service is temporarily unavailable
+ */
 router.get("/students/", errorHandler(teacerController.getStudents));
 
+/**
+ * @swagger
+ * /students/:id:
+ *  get:
+ *    summary: Get student by id
+ *    description: Return one student, available only for teachers
+ *    tags: [Teachers]
+ *    security:
+ *      - cookieAuth: []
+ *    responses:
+ *      200:
+ *        description: User returned successfully
+ *      401:
+ *        description: Unauthorized
+ *      503:
+ *        description: Service is temporarily unavailable
+ */
+router.get("/students/:id", errorHandler(teacerController.getStudent));
+
+router.put("/grade/:scoreId", errorHandler(teacerController.updateScoreOfStudent));
 export default router;
