@@ -8,7 +8,7 @@ export interface IGrade {
     comment: string;
 }
 
-export interface IStudent {
+export interface IStudent extends Document{
     name: string;
     email: string;
     password: string;
@@ -69,7 +69,7 @@ const StudentSchema = new Schema({
 );
 
 // encrypt password before saving to db
-StudentSchema.pre("save", async function (next) {
+StudentSchema.pre<IStudent>("save", async function (next) {
     if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 10);
     next();
@@ -84,4 +84,4 @@ StudentSchema.index({ name: 1 });
 StudentSchema.index({ teacherId: 1 });
 StudentSchema.index({ classId: 1 });
 
-export default mongoose.model<IStudent>("User", StudentSchema)
+export default mongoose.model<IStudent>("Student", StudentSchema)

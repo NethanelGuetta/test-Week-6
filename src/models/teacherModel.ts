@@ -6,7 +6,7 @@ export interface ITeacher extends Document {
     name: string;
     email: string;
     password: string;
-    classId: Types.ObjectId[];
+    classId: Types.ObjectId;
     comparePassword(userPassword: string): Promise<boolean>;
 }
 
@@ -37,8 +37,10 @@ const TeacherSchema = new Schema({
     timestamps: true
 });
 
-TeacherSchema.pre("save", async function (next) {
+TeacherSchema.pre<ITeacher>("save", async function (next) {
     if (!this.isModified("password")) return next();
+    
+    this.password = await bcrypt.hash(this.password, 10);
     next();
 });
 

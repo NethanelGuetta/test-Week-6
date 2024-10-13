@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getIdFromToken = exports.generateToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // Generate a JWT token
-const generateToken = (userId) => {
+const generateToken = (userId, role) => {
     return jsonwebtoken_1.default.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 exports.generateToken = generateToken;

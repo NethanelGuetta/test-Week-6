@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 import { IStudent } from "./studentModel";
 export interface IClass extends Document {
     name: string;
-    teacheId: Types.ObjectId;
+    teacherId: Types.ObjectId;
     students: IStudent[];
 }
 
@@ -22,3 +22,5 @@ const ClassSchema = new Schema({
         },
     ],
 });
+
+export default mongoose.model<IClass>("Class", ClassSchema);
