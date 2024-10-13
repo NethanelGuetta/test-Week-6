@@ -2,15 +2,38 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 import validator from "validator";
 import bcrypt from 'bcrypt';
 
+export interface IGrade {
+    exam: string;
+    score: number;
+    comment: string;
+}
+
 export interface IStudent {
     name: string;
     email: string;
     password: string;
     classId: Types.ObjectId;
     teacherId: Types.ObjectId;
-    grades: { "exam": string, "score": number }[];
+    grades: IGrade[];
     comparePassword(userPassword: string): Promise<boolean>;
 }
+
+const GradeSchema = new Schema<IGrade>({
+    exam: {
+      type: String,
+      required: true
+    },
+    score: {
+      type: Number,
+      required: true,
+      min: [0, "Score must be a positive number"],
+      max: [100, "Score must be a number between 0 and 100"]
+    },
+    comment: {
+      type: String,
+      required: true
+    }
+  });
 
 const StudentSchema = new Schema({
     name: {
@@ -38,7 +61,8 @@ const StudentSchema = new Schema({
     teacherId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Teacher"
-    }
+    },
+    grades: [GradeSchema]
 }, {
     timestamps: true
 }
